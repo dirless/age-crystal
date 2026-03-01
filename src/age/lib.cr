@@ -1,4 +1,4 @@
-@[Link("age", ldflags: "-L#{__DIR__}/../../ -lage")]
+@[Link("age", ldflags: "-L#{__DIR__}/../../dist -Wl,-rpath,#{__DIR__}/../../dist -lage")]
 lib LibAge
   struct Result
     data  : UInt8*
