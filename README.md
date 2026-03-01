@@ -27,11 +27,21 @@ Copy `libage.so` to a location on your library path (e.g. `/usr/lib/`) or alongs
 
 ### Building `libage.so` from source
 
-Requires Go >= 1.21.
+For local development (requires Go >= 1.21 on PATH):
 
 ```sh
 make build
+# → libage.so
 ```
+
+For a production-compatible build matching the RPM target (requires Docker):
+
+```sh
+make docker-build
+# → dist/libage.so (built inside Amazon Linux 2023)
+```
+
+Use `dist/libage.so` for anything going into an RPM.
 
 ## Usage
 
