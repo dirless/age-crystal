@@ -1,0 +1,11 @@
+name: age-crystal
+version: 0.1.0
+
+description: Crystal bindings to filippo.io/age encryption via libage.so
+
+authors:
+  - Dirless <hello@dirless.io>
+
+license: MIT
+
+crystal: ">= 1.9.0"

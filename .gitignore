@@ -1,0 +1,15 @@
+# Build outputs
+libage.so
+libage.h
+dist/
+
+# Go
+go/vendor/
+
+# Crystal
+lib/
+.shards/
+bin/
+
+# Docker
+.docker/
