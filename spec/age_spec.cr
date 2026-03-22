@@ -32,7 +32,7 @@ describe Age do
 
     it "raises on wrong key" do
       keypair = Age.keygen
-      other   = Age.keygen
+      other = Age.keygen
 
       ciphertext = Age.encrypt("secret", keypair.public_key)
 

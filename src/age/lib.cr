@@ -1,15 +1,15 @@
 @[Link("age", ldflags: "-L#{__DIR__}/../../dist -Wl,-rpath,#{__DIR__}/../../dist -lage")]
 lib LibAge
   struct Result
-    data  : UInt8*
-    len   : Int32
+    data : UInt8*
+    len : Int32
     error : UInt8*
   end
 
   struct Keypair
     public_key : UInt8*
     secret_key : UInt8*
-    error       : UInt8*
+    error : UInt8*
   end
 
   fun age_free(ptr : Void*) : Void
