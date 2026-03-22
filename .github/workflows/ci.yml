@@ -32,6 +32,6 @@ jobs:
         with:
           crystal: ${{ matrix.crystal }}
       - name: Build libage.so
-        run: make build
+        run: make build && mkdir -p dist && cp libage.so dist/
       - run: shards install
       - run: crystal spec
