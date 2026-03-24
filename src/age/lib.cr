@@ -1,4 +1,8 @@
-@[Link("age", ldflags: "-L#{__DIR__}/../../dist -Wl,-rpath,#{__DIR__}/../../dist -lage")]
+{% if flag?(:age_static) %}
+  @[Link(ldflags: "-L#{__DIR__}/../../dist -Wl,-Bstatic -lage -Wl,-Bdynamic")]
+{% else %}
+  @[Link("age", ldflags: "-L#{__DIR__}/../../dist -Wl,-rpath,#{__DIR__}/../../dist -lage")]
+{% end %}
 lib LibAge
   struct Result
     data : UInt8*
