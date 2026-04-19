@@ -1,7 +1,6 @@
 # age-crystal
 
-Pure Crystal implementation of the [age encryption format](https://age-encryption.org/v1)
-using OpenSSL (already a Crystal stdlib dependency — no extra native libraries required).
+Pure Crystal implementation of the [age encryption format](https://age-encryption.org/v1).
 
 ## Why
 
@@ -14,7 +13,6 @@ The format is interoperable: keys and ciphertext produced by this shard work wit
 ## Requirements
 
 - Crystal >= 1.20.0
-- OpenSSL (already linked by Crystal — no extra setup)
 
 ## Installation
 
@@ -26,7 +24,7 @@ dependencies:
     github: dirless/age-crystal
 ```
 
-Run `shards install`. That's it — no native library to build or copy.
+Run `shards install`.
 
 ## Usage
 
