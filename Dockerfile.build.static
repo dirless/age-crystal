@@ -6,7 +6,8 @@ RUN apk add --no-cache \
     gcc \
     musl-dev \
     curl \
-    tar
+    tar \
+    binutils
 
 RUN curl -fsSL https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz \
     | tar -C /usr/local -xz
@@ -21,5 +22,7 @@ COPY go/ ./go/
 RUN cd go && \
     CGO_ENABLED=1 go build \
         -buildmode=c-archive \
+        -ldflags "-s -w" \
         -o ../libage.a \
-        .
+        . && \
+    strip -S ../libage.a
