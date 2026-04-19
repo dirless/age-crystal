@@ -1,17 +1,20 @@
 # age-crystal
 
-Crystal bindings to [filippo.io/age](https://github.com/FiloSottile/age) via a Go shared library.
+Pure Crystal implementation of the [age encryption format](https://age-encryption.org/v1)
+using OpenSSL (already a Crystal stdlib dependency — no extra native libraries required).
 
 ## Why
 
-`filippo.io/age` is the reference implementation of the age encryption format — battle tested,
-audited, and maintained by the spec author. Rather than reimplement the cryptography in Crystal,
-we wrap the real thing via FFI.
+age is a simple, modern file encryption format. This shard implements it directly in
+Crystal over OpenSSL primitives — no Go toolchain, no CGo, no shared library to manage.
+
+The format is interoperable: keys and ciphertext produced by this shard work with the
+`age` CLI and any other conforming age implementation.
 
 ## Requirements
 
-- Crystal >= 1.9.0
-- `libage.so` (dynamic) or `libage.a` (static) — prebuilt and shipped with releases (see below)
+- Crystal >= 1.20.0
+- OpenSSL (already linked by Crystal — no extra setup)
 
 ## Installation
 
@@ -23,44 +26,7 @@ dependencies:
     github: dirless/age-crystal
 ```
 
-### Dynamic linking (default)
-
-Copy `libage.so` to a location on your library path (e.g. `/usr/lib/`) or alongside your binary.
-
-### Static linking
-
-Download `libage-linux-amd64.tar.gz` from the [latest release](https://github.com/dirless/age-crystal/releases/latest),
-extract it, and pass the archive to the Crystal compiler:
-
-```sh
-tar -xzf libage-linux-amd64.tar.gz  # → libage.a, libage.h
-crystal build src/your_app.cr --link-flags "/path/to/libage.a"
-```
-
-This produces a fully self-contained binary with no runtime `.so` dependency.
-
-### Building from source
-
-For local development (requires Go >= 1.21 on PATH):
-
-```sh
-make build
-# → libage.so
-```
-
-For a dynamic build compatible with Amazon Linux 2023 (requires Docker):
-
-```sh
-make docker-build
-# → dist/libage.so
-```
-
-For a static build (Alpine/musl, requires Docker):
-
-```sh
-make docker-build-static
-# → dist/libage.a + dist/libage.h
-```
+Run `shards install`. That's it — no native library to build or copy.
 
 ## Usage
 
@@ -79,7 +45,7 @@ ciphertext = Age.encrypt("hello world", keypair.public_key)
 plaintext = Age.decrypt_string(ciphertext, keypair.secret_key)
 ```
 
-Keys are compatible with the age CLI and any other age implementation:
+Keys are compatible with the `age` CLI and any other age implementation:
 
 ```sh
 # Encrypt in Crystal, decrypt with age CLI
@@ -87,15 +53,45 @@ echo "AGE-SECRET-KEY-1..." > key.txt
 age --decrypt -i key.txt ciphertext.age
 ```
 
-## Key Types
+## API
+
+### `Age.keygen`
+
+Returns a fresh `Age::Keypair` with a random X25519 keypair.
+
+### `Age.encrypt`
+
+```crystal
+Age.encrypt(data : Bytes | String, recipient : PublicKey) : Bytes
+```
+
+Encrypts `data` for `recipient`. Each call produces a different ciphertext
+(ephemeral key per encryption).
+
+### `Age.decrypt`
+
+```crystal
+Age.decrypt(ciphertext : Bytes, identity : SecretKey) : Bytes
+Age.decrypt_string(ciphertext : Bytes, identity : SecretKey) : String
+```
+
+## Key types
 
 - `Age::PublicKey` — wraps `age1...` strings
 - `Age::SecretKey` — wraps `AGE-SECRET-KEY-1...` strings
 - `Age::Keypair`   — holds both, returned by `Age.keygen`
 
-## Error Handling
+All three validate their format on construction and raise `Age::Error` if invalid.
 
-All functions raise `Age::Error` on failure.
+## Error handling
+
+All functions raise `Age::Error` on failure (bad key format, decryption mismatch, etc.).
+
+## Testing
+
+```sh
+crystal spec
+```
 
 ## License
 
