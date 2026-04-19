@@ -18,10 +18,11 @@ jobs:
       - name: Build static archive
         run: make docker-build-static
 
+      - name: Bundle artifacts
+        run: tar -czf dist/libage-linux-amd64.tar.gz -C dist libage.a libage.h
+
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            dist/libage.a
-            dist/libage.h
+          files: dist/libage-linux-amd64.tar.gz
           generate_release_notes: true
