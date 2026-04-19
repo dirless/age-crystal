@@ -11,7 +11,7 @@ we wrap the real thing via FFI.
 ## Requirements
 
 - Crystal >= 1.9.0
-- `libage.so` — prebuilt and shipped with releases (see below)
+- `libage.so` (dynamic) or `libage.a` (static) — prebuilt and shipped with releases (see below)
 
 ## Installation
 
@@ -23,9 +23,23 @@ dependencies:
     github: dirless/age-crystal
 ```
 
+### Dynamic linking (default)
+
 Copy `libage.so` to a location on your library path (e.g. `/usr/lib/`) or alongside your binary.
 
-### Building `libage.so` from source
+### Static linking
+
+Download `libage-linux-amd64.tar.gz` from the [latest release](https://github.com/dirless/age-crystal/releases/latest),
+extract it, and pass the archive to the Crystal compiler:
+
+```sh
+tar -xzf libage-linux-amd64.tar.gz  # → libage.a, libage.h
+crystal build src/your_app.cr --link-flags "/path/to/libage.a"
+```
+
+This produces a fully self-contained binary with no runtime `.so` dependency.
+
+### Building from source
 
 For local development (requires Go >= 1.21 on PATH):
 
@@ -34,14 +48,19 @@ make build
 # → libage.so
 ```
 
-For a production-compatible build matching the RPM target (requires Docker):
+For a dynamic build compatible with Amazon Linux 2023 (requires Docker):
 
 ```sh
 make docker-build
-# → dist/libage.so (built inside Amazon Linux 2023)
+# → dist/libage.so
 ```
 
-Use `dist/libage.so` for anything going into an RPM.
+For a static build (Alpine/musl, requires Docker):
+
+```sh
+make docker-build-static
+# → dist/libage.a + dist/libage.h
+```
 
 ## Usage
 
