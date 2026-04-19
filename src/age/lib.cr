@@ -1,5 +1,5 @@
 {% if flag?(:age_static) %}
-  @[Link(ldflags: "-L#{__DIR__}/../../dist -Wl,-Bstatic -lage -Wl,-Bdynamic")]
+  @[Link(ldflags: "-L#{__DIR__}/../../dist -lage")]
 {% else %}
   @[Link("age", ldflags: "-L#{__DIR__}/../../dist -Wl,-rpath,#{__DIR__}/../../dist -lage")]
 {% end %}
