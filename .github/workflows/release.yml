@@ -6,8 +6,8 @@ on:
       - "v*"
 
 jobs:
-  build:
-    name: Build libage.a
+  release:
+    name: Create release
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -15,14 +15,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build static archive
-        run: make docker-build-static
+      - uses: crystal-lang/install-crystal@v1
+        with:
+          crystal: latest
 
-      - name: Bundle artifacts
-        run: tar -czf dist/libage-static-linux-amd64.tar.gz -C dist libage.a libage.h
+      - run: shards install
+      - run: crystal spec
 
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/libage-static-linux-amd64.tar.gz
           generate_release_notes: true

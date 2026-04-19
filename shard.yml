@@ -1,5 +1,5 @@
 name: age-crystal
-version: 0.1.0
+version: 0.2.0
 
 description: Pure Crystal implementation of age encryption (https://age-encryption.org/v1)
 

@@ -25,13 +25,8 @@ jobs:
         crystal: [latest, nightly]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version: "1.21"
       - uses: crystal-lang/install-crystal@v1
         with:
           crystal: ${{ matrix.crystal }}
-      - name: Build libage.so
-        run: make build && mkdir -p dist && cp libage.so dist/
       - run: shards install
       - run: crystal spec
