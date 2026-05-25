@@ -5,7 +5,7 @@ Pure Crystal implementation of the [age encryption format](https://age-encryptio
 ## Why
 
 age is a simple, modern file encryption format. This shard implements it directly in
-Crystal over OpenSSL primitives — no Go toolchain, no CGo, no shared library to manage.
+Crystal over OpenSSL primitives.
 
 The format is interoperable: keys and ciphertext produced by this shard work with the
 `age` CLI and any other conforming age implementation.
