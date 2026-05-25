@@ -19,9 +19,10 @@ module Age
       end
 
       # Write "--- " then compute MAC over everything so far (that is the MAC input).
-      io.print "--- "
+      io.print "---"
       hmac_key = HKDF.sha256(file_key, Bytes.new(0), "header".to_slice, 32)
       mac = OpenSSL::HMAC.digest(:sha256, hmac_key, io.to_s.to_slice)
+      io.print " "
       io.puts b64_encode(mac)
 
       io.to_s
@@ -65,7 +66,7 @@ module Age
       mac = b64_decode(footer[4..])
 
       # Reconstruct the bytes the MAC was computed over: everything up to and including "--- "
-      header_for_mac = lines[0...i].map { |l| "#{l}\n" }.join + "--- "
+      header_for_mac = lines[0...i].map { |l| "#{l}\n" }.join + "---"
 
       {stanzas, mac, header_for_mac}
     end
