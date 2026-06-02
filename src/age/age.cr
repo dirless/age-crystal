@@ -1,4 +1,6 @@
 require "./bech32"
+require "./sha256"
+require "./hmac"
 require "./x25519"
 require "./hkdf"
 require "./chacha20poly1305"
@@ -96,7 +98,7 @@ module Age
 
   private def self.verify_header_mac(file_key : Bytes, header_for_mac : String, mac : Bytes)
     hmac_key     = HKDF.sha256(file_key, Bytes.new(0), "header".to_slice, 32)
-    expected_mac = OpenSSL::HMAC.digest(:sha256, hmac_key, header_for_mac.to_slice)
+    expected_mac = HMAC.digest(hmac_key, header_for_mac.to_slice)
 
     raise Error.new("Header MAC verification failed") unless constant_time_eq(mac, expected_mac)
   end

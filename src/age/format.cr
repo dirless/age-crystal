@@ -1,5 +1,4 @@
 require "base64"
-require "openssl/hmac"
 
 module Age
   # Serialises and parses the age text header (https://age-encryption.org/v1).
@@ -21,7 +20,7 @@ module Age
       # Write "--- " then compute MAC over everything so far (that is the MAC input).
       io.print "---"
       hmac_key = HKDF.sha256(file_key, Bytes.new(0), "header".to_slice, 32)
-      mac = OpenSSL::HMAC.digest(:sha256, hmac_key, io.to_s.to_slice)
+      mac = HMAC.digest(hmac_key, io.to_s.to_slice)
       io.print " "
       io.puts b64_encode(mac)
 

@@ -1,5 +1,3 @@
-require "openssl/hmac"
-
 module Age
   # HKDF-SHA-256 (RFC 5869).
   module HKDF
@@ -7,7 +5,7 @@ module Age
       # Extract: PRK = HMAC-SHA256(salt, IKM)
       # Per RFC 5869 §2.2: if salt is not provided, use HashLen zeros.
       key = salt.empty? ? Bytes.new(32) : salt
-      prk = OpenSSL::HMAC.digest(:sha256, key, ikm)
+      prk = HMAC.digest(key, ikm)
 
       # Expand: T(1) || T(2) || ... until we have `length` bytes
       output = IO::Memory.new
@@ -20,7 +18,7 @@ module Age
         msg.write(t)
         msg.write(info)
         msg.write_byte(counter)
-        t = OpenSSL::HMAC.digest(:sha256, prk, msg.to_slice)
+        t = HMAC.digest(prk, msg.to_slice)
         output.write(t)
       end
 
