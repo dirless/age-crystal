@@ -21,6 +21,20 @@ module Age
     )
   end
 
+  # Reconstruct a full Keypair from an existing secret key string.
+  # Use this when you need the corresponding public key without
+  # generating a brand-new keypair (e.g. re-enrollment with an existing key).
+  def self.keypair_from_secret(secret_key : String) : Keypair
+    sk = SecretKey.new(secret_key)
+    _, sec_bytes = Bech32.decode(sk.value)
+    raise Error.new("Invalid identity key length") unless sec_bytes.size == 32
+    pub_bytes = X25519.public_from_private(sec_bytes)
+    Keypair.new(
+      PublicKey.new(Bech32.encode("age", pub_bytes)),
+      sk
+    )
+  end
+
   def self.encrypt(data : Bytes, recipient : PublicKey) : Bytes
     hrp, pub_bytes = Bech32.decode(recipient.value)
     raise Error.new("Invalid recipient key HRP: #{hrp}") unless hrp == "age"
