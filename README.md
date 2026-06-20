@@ -5,7 +5,7 @@ Pure Crystal implementation of the [age encryption format](https://age-encryptio
 ## Why
 
 age is a simple, modern file encryption format. This shard implements it directly in
-Crystal over OpenSSL primitives.
+Crystal with pure Crystal cryptographic primitives — no OpenSSL, no external C libraries.
 
 The format is interoperable: keys and ciphertext produced by this shard work with the
 `age` CLI and any other conforming age implementation.
@@ -57,6 +57,16 @@ age --decrypt -i key.txt ciphertext.age
 
 Returns a fresh `Age::Keypair` with a random X25519 keypair.
 
+### `Age.keypair_from_secret`
+
+```crystal
+Age.keypair_from_secret(secret_key : String) : Keypair
+```
+
+Reconstructs the full keypair from an existing secret key string. Use this when you
+need the corresponding public key without generating a new keypair (e.g. re-enrollment
+with an existing key).
+
 ### `Age.encrypt`
 
 ```crystal
@@ -93,4 +103,4 @@ crystal spec
 
 ## License
 
-MIT
+Apache-2.0

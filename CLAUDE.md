@@ -1,6 +1,6 @@
 # age-crystal
 
-Pure Crystal implementation of the [age encryption format](https://age-encryption.org/v1). No Go toolchain, no CGo — built directly on OpenSSL primitives via Crystal's stdlib.
+Pure Crystal implementation of the [age encryption format](https://age-encryption.org/v1). No Go toolchain, no CGo, no OpenSSL — all cryptographic primitives (SHA-256, ChaCha20-Poly1305, HMAC, HKDF, X25519, Bech32) are implemented directly in Crystal.
 
 ## What it does
 
