@@ -1,6 +1,6 @@
 # age-crystal
 
-Pure Crystal implementation of the [age encryption format](https://age-encryption.org/v1). No Go toolchain, no CGo, no OpenSSL — all cryptographic primitives (SHA-256, ChaCha20-Poly1305, HMAC, HKDF, X25519, Bech32) are implemented directly in Crystal.
+Pure Crystal implementation of the [age encryption format](https://age-encryption.org/v1). No Go toolchain, no CGo, no OpenSSL. All cryptographic primitives (SHA-256, ChaCha20-Poly1305, HMAC, HKDF, X25519, Bech32) are implemented directly in Crystal.
 
 ## What it does
 
@@ -37,4 +37,4 @@ All public API functions raise `Age::Error` on failure (bad key format, wrong ke
 
 ## Used by
 
-`dirless-cli` — generates age keypairs during node enrollment and stores the secret key at `/etc/dirless/age.key`.
+`dirless-cli` generates age keypairs during node enrollment and stores the secret key at `/etc/dirless/age.key`.
